@@ -1,0 +1,17 @@
+Follow the steps in https://github.com/prgrobots/hiwonder_xArm_1s#1-install-ros-2-jazzy
+
+# terminal 1:
+webot@webot:~/Desktop$ source /opt/ros/jazzy/setup.bash
+ros2 launch learm_ros2 sim.launch.py
+
+# terminal 2 
+source /opt/ros/jazzy/setup.bash
+source ~/xarm-sim-venv/bin/activate
+cd ~/Documents/src
+python arm_subscriber.py
+
+# terminal 2
+source /opt/ros/jazzy/setup.bash
+source ~/xarm-sim-venv/bin/activate
+cd ~/Documents/src
+python target_publisher.py  

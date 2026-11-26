@@ -1,0 +1,228 @@
+# Angelo's xarm_toolkit
+
+Control a simulated Hiwonder xArm 1S (LeArm) robot arm with mouse clicks.
+`xarm_toolkit` turns a click in a Pygame window into servo targets and sends
+them to the ROS 2 (Jazzy) arm simulator, which runs in RViz with no physical
+arm and no Gazebo.
+
+> Built on top of the simulator in
+> [prgrobots/hiwonder_xArm_1s](https://github.com/prgrobots/hiwonder_xArm_1s),
+> which is itself based on [andrewda/learm_ros2](https://github.com/andrewda/learm_ros2).
+
+**Demo:** <https://tafewa-my.sharepoint.com/:v:/g/personal/20163477_tafe_wa_edu_au/IQB8MF4u24kAT6uvQuhwv2X3AUYTGBcT8XKS-D2xvFEHkOE?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=dw3UDf)>
+
+---
+
+## Contents
+
+1. [How it works](#how-it-works)
+2. [Prerequisites](#prerequisites)
+3. [Install](#install)
+4. [Build](#build)
+5. [Run](#run)
+6. [Test](#test)
+7. [Project layout](#project-layout)
+8. [Troubleshooting](#troubleshooting)
+9. [Licence](#licence)
+
+---
+
+## How it works
+
+```
+ MockClickTarget (Pygame)         xarm_toolkit                  Simulator
+ ------------------------   ->   ------------------   ->   ---------------------
+ click at pixel (x, y)           map to servo 0-1000        ROS 2 Jazzy + RViz
+                                 publish command            (learm_ros2 sim)
+```
+
+- `targets/target_source.py` defines the `TargetSource` interface and the
+  `TargetSelectionCancelled` exception.
+- `targets/mock_click.py` implements `MockClickTarget`, which opens an
+  800 x 600 window, waits for one click and returns `(x, y)`.
+- The toolkit is the **publisher**; the simulator is the **subscriber**.
+
+Servo values run from 0 to 1000. Servo IDs: 1 gripper, 2 wrist roll,
+3 wrist flex, 4 elbow, 5 shoulder lift, 6 shoulder pan. For servos 2-6,
+`500` is the centre position.
+
+---
+
+## Prerequisites
+
+| Requirement | Version |
+| ----------- | ------- |
+| Ubuntu      | 24.04 (Noble) |
+| ROS 2       | Jazzy |
+| Python      | 3.12 |
+| A display   | Needed for RViz and the Pygame window (not available over plain SSH) |
+
+---
+
+## Install
+
+### 1. ROS 2 Jazzy and dependencies
+
+Install ROS 2 Jazzy following the
+[official instructions](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html), then:
+
+```bash
+sudo apt update
+sudo apt install \
+  git \
+  python3-venv \
+  python3-colcon-common-extensions \
+  ros-jazzy-desktop \
+  ros-jazzy-moveit \
+  ros-jazzy-ros2-control \
+  ros-jazzy-ros2-controllers
+```
+
+Check that ROS is available:
+
+```bash
+source /opt/ros/jazzy/setup.bash
+ros2 --help
+```
+
+### 2. Clone the simulator
+
+```bash
+cd ~
+git clone https://github.com/prgrobots/hiwonder_xArm_1s.git
+```
+
+### 3. Clone this repository
+
+```bash
+cd ~
+git clone <YOUR REPOSITORY URL>
+cd <YOUR REPOSITORY NAME>
+```
+
+### 4. Python environment
+
+The virtual environment must see the system packages, because `xarm_sim`
+uses the `rclpy` that ships with ROS.
+
+```bash
+source /opt/ros/jazzy/setup.bash
+python3 -m venv --system-site-packages ~/xarm-sim-venv
+source ~/xarm-sim-venv/bin/activate
+pip install ~/hiwonder_xArm_1s/xarm_sim
+pip install pygame
+```
+
+---
+
+## Build
+
+Build the simulator workspace (this repository is plain Python and needs no build step):
+
+```bash
+cd ~/hiwonder_xArm_1s
+source /opt/ros/jazzy/setup.bash
+colcon build --symlink-install
+source install/setup.bash
+```
+
+---
+
+## Run
+
+Use two terminals. **Source ROS before activating the virtual environment in every terminal.**
+
+**Terminal A: start the simulator (leave it running)**
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source ~/hiwonder_xArm_1s/install/setup.bash
+ros2 launch learm_ros2 sim.launch.py
+```
+
+RViz opens with the arm. Without a display, add `use_rviz:=false`.
+
+**Terminal B: start the toolkit**
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source ~/xarm-sim-venv/bin/activate
+cd <path to the folder containing xarm_toolkit>
+python run_click.py
+```
+
+Click anywhere in the window to aim the arm. Press `Esc` or close the
+window to quit.
+
+### Check that the simulator is ready
+
+```bash
+ros2 action list            # should include /joint_trajectory_controller/follow_joint_trajectory
+ros2 control list_controllers   # both controllers should be "active"
+```
+
+### Send a command without Python
+
+```bash
+ros2 topic pub --once /xarm/command std_msgs/msg/String \
+  "{data: '500/500/500/500/500/500'}"
+```
+
+---
+
+## Test
+
+```bash
+source /opt/ros/jazzy/setup.bash
+source ~/xarm-sim-venv/bin/activate
+cd <repository root>
+pip install pytest
+pytest
+```
+
+<DESCRIBE WHAT THE TESTS COVER, e.g. the pixel-to-servo mapping and clamping to 0-1000.>
+
+Manual test: with the simulator running, click the four corners of the
+window and confirm the arm pans left/right and lifts up/down in RViz.
+
+---
+
+## Project layout
+
+```
+<repository root>/
+├── README.md
+├── LICENSE
+├── .gitignore
+├── run_click.py
+├── tests/
+└── xarm_toolkit/
+    ├── __init__.py
+    └── targets/
+        ├── __init__.py
+        ├── target_source.py
+        └── mock_click.py
+```
+
+---
+
+## Troubleshooting
+
+| Symptom | Fix |
+| ------- | --- |
+| `No module named 'moveit_configs_utils'` | `sudo apt install ros-jazzy-moveit`, then rebuild |
+| `package 'controller_manager' not found` | `sudo apt install ros-jazzy-ros2-control ros-jazzy-ros2-controllers`, then rebuild |
+| `attempted relative import with no known parent package` | Don't run files inside `xarm_toolkit/` directly. Run `run_click.py` from the folder that contains `xarm_toolkit/`, or use `python -m xarm_toolkit.targets.mock_click` |
+| `Could not reach the trajectory action server` | Start the simulator first; confirm `ros2 action list` shows the action; make sure both terminals share the same `ROS_DOMAIN_ID`. In a VM, try `export FASTDDS_BUILTIN_TRANSPORTS=UDPv4` in both terminals and restart the simulator |
+| `externally-managed-environment` from pip | Activate the virtual environment before running `pip` |
+| `undefined symbol ... Cdr9serializeEj` | Mismatched Fast CDR packages; see the "fixing the supplied VM" section of the [simulator README](https://github.com/prgrobots/hiwonder_xArm_1s) |
+| `Overrun detected! The controller manager missed its desired rate` | Harmless in a VM; ignore |
+
+---
+
+## Licence
+
+<CHOOSE A LICENCE, e.g. MIT> Copyright (c) <YEAR> <YOUR NAME>.
+See [LICENSE](LICENSE) for details.
+
+The simulator and `learm_ros2` are third-party projects with their own licences.
