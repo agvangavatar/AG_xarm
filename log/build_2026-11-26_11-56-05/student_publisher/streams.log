@@ -1,0 +1,41 @@
+[1.523s] Invoking command in '/home/webot/Documents/src/student_publisher': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/webot/Documents/src/build/student_publisher/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/webot/Documents/src/install/student_publisher/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/student_publisher build --build-base /home/webot/Documents/src/build/student_publisher/build install --record /home/webot/Documents/src/build/student_publisher/install.log --install-scripts $base/lib/student_publisher --single-version-externally-managed install_data
+[1.907s] running egg_info
+[1.907s] creating ../build/student_publisher/student_publisher.egg-info
+[1.928s] writing ../build/student_publisher/student_publisher.egg-info/PKG-INFO
+[1.930s] writing dependency_links to ../build/student_publisher/student_publisher.egg-info/dependency_links.txt
+[1.930s] writing entry points to ../build/student_publisher/student_publisher.egg-info/entry_points.txt
+[1.930s] writing requirements to ../build/student_publisher/student_publisher.egg-info/requires.txt
+[1.930s] writing top-level names to ../build/student_publisher/student_publisher.egg-info/top_level.txt
+[1.930s] writing manifest file '../build/student_publisher/student_publisher.egg-info/SOURCES.txt'
+[1.960s] reading manifest file '../build/student_publisher/student_publisher.egg-info/SOURCES.txt'
+[1.961s] writing manifest file '../build/student_publisher/student_publisher.egg-info/SOURCES.txt'
+[1.961s] running build
+[1.962s] running build_py
+[1.963s] creating /home/webot/Documents/src/build/student_publisher/build
+[1.963s] creating /home/webot/Documents/src/build/student_publisher/build/lib
+[1.963s] creating /home/webot/Documents/src/build/student_publisher/build/lib/student_publisher
+[1.963s] copying student_publisher/student_id_publisher.py -> /home/webot/Documents/src/build/student_publisher/build/lib/student_publisher
+[1.964s] copying student_publisher/__init__.py -> /home/webot/Documents/src/build/student_publisher/build/lib/student_publisher
+[1.965s] copying student_publisher/student_id_subscriber.py -> /home/webot/Documents/src/build/student_publisher/build/lib/student_publisher
+[1.965s] running install
+[1.972s] running install_lib
+[1.990s] creating /home/webot/Documents/src/install/student_publisher/lib/python3.12/site-packages/student_publisher
+[1.990s] copying /home/webot/Documents/src/build/student_publisher/build/lib/student_publisher/student_id_publisher.py -> /home/webot/Documents/src/install/student_publisher/lib/python3.12/site-packages/student_publisher
+[1.990s] copying /home/webot/Documents/src/build/student_publisher/build/lib/student_publisher/__init__.py -> /home/webot/Documents/src/install/student_publisher/lib/python3.12/site-packages/student_publisher
+[1.990s] copying /home/webot/Documents/src/build/student_publisher/build/lib/student_publisher/student_id_subscriber.py -> /home/webot/Documents/src/install/student_publisher/lib/python3.12/site-packages/student_publisher
+[1.990s] byte-compiling /home/webot/Documents/src/install/student_publisher/lib/python3.12/site-packages/student_publisher/student_id_publisher.py to student_id_publisher.cpython-312.pyc
+[2.009s] byte-compiling /home/webot/Documents/src/install/student_publisher/lib/python3.12/site-packages/student_publisher/__init__.py to __init__.cpython-312.pyc
+[2.009s] byte-compiling /home/webot/Documents/src/install/student_publisher/lib/python3.12/site-packages/student_publisher/student_id_subscriber.py to student_id_subscriber.cpython-312.pyc
+[2.009s] running install_data
+[2.010s] creating /home/webot/Documents/src/install/student_publisher/share/ament_index
+[2.010s] creating /home/webot/Documents/src/install/student_publisher/share/ament_index/resource_index
+[2.010s] creating /home/webot/Documents/src/install/student_publisher/share/ament_index/resource_index/packages
+[2.010s] copying resource/student_publisher -> /home/webot/Documents/src/install/student_publisher/share/ament_index/resource_index/packages
+[2.010s] copying package.xml -> /home/webot/Documents/src/install/student_publisher/share/student_publisher
+[2.010s] running install_egg_info
+[2.021s] Copying ../build/student_publisher/student_publisher.egg-info to /home/webot/Documents/src/install/student_publisher/lib/python3.12/site-packages/student_publisher-0.0.0-py3.12.egg-info
+[2.041s] running install_scripts
+[2.333s] Installing student_publisher script to /home/webot/Documents/src/install/student_publisher/lib/student_publisher
+[2.334s] Installing student_subscriber script to /home/webot/Documents/src/install/student_publisher/lib/student_publisher
+[2.334s] writing list of installed files to '/home/webot/Documents/src/build/student_publisher/install.log'
+[2.348s] Invoked command in '/home/webot/Documents/src/student_publisher' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/webot/Documents/src/build/student_publisher/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/webot/Documents/src/install/student_publisher/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/student_publisher build --build-base /home/webot/Documents/src/build/student_publisher/build install --record /home/webot/Documents/src/build/student_publisher/install.log --install-scripts $base/lib/student_publisher --single-version-externally-managed install_data
