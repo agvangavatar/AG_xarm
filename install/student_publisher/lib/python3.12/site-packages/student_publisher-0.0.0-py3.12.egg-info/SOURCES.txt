@@ -1,0 +1,17 @@
+package.xml
+setup.cfg
+setup.py
+../build/student_publisher/student_publisher.egg-info/PKG-INFO
+../build/student_publisher/student_publisher.egg-info/SOURCES.txt
+../build/student_publisher/student_publisher.egg-info/dependency_links.txt
+../build/student_publisher/student_publisher.egg-info/entry_points.txt
+../build/student_publisher/student_publisher.egg-info/requires.txt
+../build/student_publisher/student_publisher.egg-info/top_level.txt
+../build/student_publisher/student_publisher.egg-info/zip-safe
+resource/student_publisher
+student_publisher/__init__.py
+student_publisher/student_id_publisher.py
+student_publisher/student_id_subscriber.py
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py

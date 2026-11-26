@@ -1,0 +1,3 @@
+[console_scripts]
+student_publisher = student_id_publisher:main
+student_subscriber = student_id_subscriber:main
